@@ -9,4 +9,4 @@ for i in range(10):
         turtle.forward(2*10*(i+1))
         turtle.left(90)
 
-turtle.mainloop()
+turtle.exitonclick()

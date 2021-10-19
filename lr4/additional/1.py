@@ -3,8 +3,8 @@
 
 import random
 
-
 numbers = list([random.randint(1, 9) for i in range(100)])
+
 
 unique_numbers = []
 for i in numbers:
