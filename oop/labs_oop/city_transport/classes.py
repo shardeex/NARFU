@@ -15,14 +15,12 @@
 # ремонта, результат ремонта, персонал, производящего ремонт.
 
 _vehicle_id = 0
-
 def _next_vehicle_id():
     global _vehicle_id
     _vehicle_id += 1
     return _vehicle_id
 
 _person_id = 0
-
 def _next_person_id():
     global _person_id
     _person_id += 1
@@ -46,9 +44,20 @@ hours, {self.mileage} mileage, {self.number_of_repairs} number of repairs, \
 characteristic: \"{self.characteristic}\""
 
 class Person():
-    def __init__(self, surname: str, name: str, patronymic: str,
-    year_of_birth: int, year_of_joining: int, experience: int,
-    post: str, sex: str, address: str, city: str, phone_number: str):
+    def __init__(
+        self,
+        surname: str,
+        name: str,
+        patronymic: str,
+        year_of_birth: int,
+        year_of_joining: int,
+        experience: int,
+        post: str,
+        sex: str,
+        address: str,
+        city: str,
+        phone_number: str
+    ):
         self.surname = surname
         self.name = name
         self.patronymic = patronymic
@@ -77,21 +86,32 @@ class Service(Person):
 # UPD: готово!
 
 class Route():
-    def __init__(self, name: str, vehicle: Vehicle, driver: Driver,
-    schedule: str):
+    def __init__(
+        self,
+        name: str,
+        vehicle: Vehicle,
+        driver: Driver,
+        schedule: str
+    ):
         self.name = name
         self.vehicle = vehicle
         self.driver = driver
         self.schedule = schedule
     
-    def drive_route(self, time, mileage):
+    def drive_route(self, time: int, mileage: int):
         self.vehicle.operating_hours += time
         self.vehicle.mileage += mileage
 
 class GarageFacilities():
-    def __init__(self, name: str, vehicle_under_repair: Vehicle,
-    repair_type: str, receipt_date: str, repair_result: str,
-    service_staff_list: list): 
+    def __init__(
+        self,
+        name: str,
+        vehicle_under_repair: Vehicle,
+        repair_type: str,
+        receipt_date: str,
+        repair_result: str,
+        service_staff_list: list
+    ):
         self.name = name
         self.vehicle_under_repair = vehicle_under_repair
         self.repair_type = repair_type
