@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
     # Лабораторная №2 - test directory
 
-    # Лабораторная #3
+    # Лабораторная №3
     red_motorcycle = Vehicle.add('Red motorcycle')
     red_motorcycle.characteristic = 'Old red motorcycle.'
     red_motorcycle.flight(5, 300)
@@ -22,3 +22,5 @@ if __name__ == '__main__':
     red_motorcycle.get_flights()
     PersistenceVehicle.serialize(red_motorcycle)
     print(PersistenceVehicle.deserialize())
+
+    # Лабораторная №4 - уже реализовано в классах Driver и Service
