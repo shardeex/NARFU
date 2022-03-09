@@ -14,22 +14,48 @@
 # транспорт на ремонте, вид ремонта, дата поступления, дата выдачи после
 # ремонта, результат ремонта, персонал, производящего ремонт.
 
+import pickle
+from datetime import datetime
+
+
 _vehicle_id = 0
+
+
 def _next_vehicle_id():
     global _vehicle_id
     _vehicle_id += 1
     return _vehicle_id
 
+
 _person_id = 0
+
+
 def _next_person_id():
     global _person_id
     _person_id += 1
     return _person_id
 
 
+class Flight(object):
+    def __init__(self, hours: int, mileage: int):
+        self.date = datetime.today()
+        self.hours = hours
+        self.mileage = mileage
+    def __del__(self):
+        with open('flights.txt', 'a+') as f:
+            f.write(f'{self.date}: {self.hours} hour(s) | {self.mileage} km\n')
+
+
 class Vehicle():
-    def __init__(self, name: str, operating_hours = 0, mileage = 0,
-    number_of_repairs = 0, characteristic = "No characteristic yet."):
+
+    def __init__(
+        self,
+        name: str,
+        operating_hours=0,
+        mileage=0,
+        number_of_repairs=0,
+        characteristic='No characteristic yet.'
+    ):
         self.name = name
         self.operating_hours = operating_hours
         self.mileage = mileage
@@ -37,13 +63,48 @@ class Vehicle():
         self.characteristic = characteristic
 
         self.id = _next_vehicle_id()
+        self.flights = []
 
     def __str__(self):
-        return f"Vehicle \"{self.name}\" [ID: {self.id}], {self.operating_hours} operatiing \
-hours, {self.mileage} mileage, {self.number_of_repairs} number of repairs, \
-characteristic: \"{self.characteristic}\""
+        return (
+            f'Vehicle "{self.name}" [ID: {self.id}], '
+            f'{self.operating_hours} operatiing hours, '
+            f'{self.mileage} mileage, '
+            f'{self.number_of_repairs} number of repairs, '
+            f'characteristic: "{self.characteristic}".'
+        )
+    
+    def flight(self, hours: int, mileage: int):
+        self.operating_hours += hours
+        self.mileage += mileage
+        self.flights.append(Flight(hours, mileage))
+    
+    def get_flights(self):
+        for i in range(len(self.flights)):
+            flight: Flight = self.flights.pop(0)
+            print(f'{flight.date}: {flight.hours} hours, {flight.mileage} km')
 
-class Person():
+    @classmethod
+    def add(cls, name: str):
+        return cls(name)
+
+
+class PersistenceVehicle(object):
+
+    @staticmethod
+    def serialize(vehicle: Vehicle):
+        with open('vehicle.pkl', 'wb+') as f:
+            pickle.dump(vehicle, f)
+
+    @staticmethod
+    def deserialize():
+        with open('vehicle.pkl', 'rb') as f:
+            vehicle = pickle.load(f)
+        return vehicle
+
+
+class Worker():
+
     def __init__(
         self,
         surname: str,
@@ -72,20 +133,41 @@ class Person():
 
         self.id = _next_person_id()
 
-class Driver(Person):
-    job = "driver"
-        
+    @classmethod
+    def recruit(cls, value):
+        return cls(value)
 
-class Service(Person):
-    job = "service"
 
-# по идее, для Driver и Service можно создать класс Person и либо от него
+class PersistenceWorker:
+
+    @staticmethod
+    def serialize(worker: Worker):
+        with open('worker.pkl', 'wb+') as f:
+            pickle.dump(worker, f)
+
+    @staticmethod
+    def deserialize():
+        with open('worker.pkl', 'rb') as f:
+            worker = pickle.load(f)
+        return worker
+
+
+class Driver(Worker):
+    job = 'driver'
+
+
+class Service(Worker):
+    job = 'service'
+
+# по идее, для Driver и Service можно создать класс Worker и либо от него
 # наследовать общий __init__(), либо просто добавить ещё один аргумент типа
 # is_driver или что-то вроде этого. но по заданию это две сущности, потому так
 
 # UPD: готово!
 
+
 class Route():
+
     def __init__(
         self,
         name: str,
@@ -97,12 +179,14 @@ class Route():
         self.vehicle = vehicle
         self.driver = driver
         self.schedule = schedule
-    
+
     def drive_route(self, time: int, mileage: int):
         self.vehicle.operating_hours += time
         self.vehicle.mileage += mileage
 
+
 class GarageFacilities():
+
     def __init__(
         self,
         name: str,
