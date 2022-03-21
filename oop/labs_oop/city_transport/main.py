@@ -24,3 +24,10 @@ if __name__ == '__main__':
     print(PersistenceVehicle.deserialize())
 
     # Лабораторная №4 - уже реализовано в классах Driver и Service
+
+    # Лабораторная #5
+    try:
+        # red_motorcycle.characteristic = 1001
+        del red_motorcycle.characteristic
+    except Exception as e:
+        print(f'! Exception: {e}')

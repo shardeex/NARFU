@@ -13,9 +13,10 @@
 # Сущность гаражное хозяйство имеет следующие атрибуты: название гаража,
 # транспорт на ремонте, вид ремонта, дата поступления, дата выдачи после
 # ремонта, результат ремонта, персонал, производящего ремонт.
+from __future__ import annotations
 
 import pickle
-from datetime import datetime
+from datetime import datetime, date
 
 
 _vehicle_id = 0
@@ -38,12 +39,18 @@ def _next_person_id():
 
 class Flight(object):
     def __init__(self, hours: int, mileage: int):
-        self.date = datetime.today()
-        self.hours = hours
-        self.mileage = mileage
+        self._date = datetime.today()
+        self._hours = hours
+        self._mileage = mileage
+
     def __del__(self):
         with open('flights.txt', 'a+') as f:
-            f.write(f'{self.date}: {self.hours} hour(s) | {self.mileage} km\n')
+            f.write(f'{self._date}: {self._hours} hour(s) | {self._mileage} km\n')
+
+
+class UndeleteableArgumentError(Exception):
+    def __str__(self):
+        return f'Undeleteable argument.'
 
 
 class Vehicle():
@@ -57,32 +64,47 @@ class Vehicle():
         characteristic='No characteristic yet.'
     ):
         self.name = name
-        self.operating_hours = operating_hours
-        self.mileage = mileage
-        self.number_of_repairs = number_of_repairs
-        self.characteristic = characteristic
+        self._operating_hours = operating_hours
+        self._mileage = mileage
+        self._number_of_repairs = number_of_repairs
+        self._characteristic = characteristic
 
         self.id = _next_vehicle_id()
-        self.flights = []
+        self.__flights = []
 
     def __str__(self):
         return (
             f'Vehicle "{self.name}" [ID: {self.id}], '
-            f'{self.operating_hours} operatiing hours, '
-            f'{self.mileage} mileage, '
-            f'{self.number_of_repairs} number of repairs, '
+            f'{self._operating_hours} operatiing hours, '
+            f'{self._mileage} mileage, '
+            f'{self._number_of_repairs} number of repairs, '
             f'characteristic: "{self.characteristic}".'
         )
     
     def flight(self, hours: int, mileage: int):
-        self.operating_hours += hours
-        self.mileage += mileage
-        self.flights.append(Flight(hours, mileage))
+        self._operating_hours += hours
+        self._mileage += mileage
+        self.__flights.append(Flight(hours, mileage))
     
     def get_flights(self):
-        for i in range(len(self.flights)):
-            flight: Flight = self.flights.pop(0)
-            print(f'{flight.date}: {flight.hours} hours, {flight.mileage} km')
+        for i in range(len(self.__flights)):
+            flight: Flight = self.__flights.pop(0)
+            print(f'{flight._date}: {flight._hours} hours, {flight._mileage} km')
+    
+    @property
+    def characteristic(self):
+        return self._characteristic
+    
+    @characteristic.setter
+    def characteristic(self, value):
+        if not isinstance(value, str):
+            raise TypeError(f'Value "{value}" should be {str}, not {type(value)}')
+        else:
+            self._characteristic = value
+    
+    @characteristic.deleter
+    def characteristic(self):
+        raise UndeleteableArgumentError()
 
     @classmethod
     def add(cls, name: str):
@@ -102,6 +124,27 @@ class PersistenceVehicle(object):
             vehicle = pickle.load(f)
         return vehicle
 
+
+class LastDateError(Exception):
+
+    def __init__(self, date):
+        self.date = date
+        self.today = date.today()
+
+    def __str__(self):
+        return f'Last working date cannot be from future (got {self.date}, today is {self.today})'
+
+
+class LastWorkingDay():
+    def __init__(self):
+        self.max_date = date.today()
+    def __get__(self, instance: Worker, cls):
+        return instance._last_working_day
+    def __set__(self, instance: Worker, value):
+        if self.max_date < value:
+            raise LastDateError(value)
+        else:
+            instance._last_working_day = value
 
 class Worker():
 
@@ -130,6 +173,9 @@ class Worker():
         self.address = address
         self.city = city
         self.phone_number = phone_number
+
+        self.last_working_day = LastWorkingDay()
+        self._last_working_day = date.today()
 
         self.id = _next_person_id()
 
