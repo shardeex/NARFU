@@ -88,10 +88,18 @@ class Vehicle():
         self._mileage += mileage
         self.__flights.append(Flight(hours, mileage))
 
-    def get_flights(self):
+    def get_flights(self, silent: bool = False):
         for i in range(len(self.__flights)):
             flight: Flight = self.__flights.pop(0)
-            print(f'{flight._date}: {flight._hours} hours, {flight._mileage} km')
+            if not silent:
+                print(f'{flight._date}: {flight._hours} hours, {flight._mileage} km')
+
+    @staticmethod
+    def log(func):
+        def wrapper(*args, **kwargs):
+            print('* Called `{}`.\n* Args: {}\n* Kwargs: {}'.format(func.__name__, args, kwargs))
+            return func(*args, **kwargs)
+        return wrapper
 
     @property
     def characteristic(self):
@@ -241,19 +249,21 @@ class Route():
         self.schedule = schedule
     
     def __call__(self, time: int, mileage: int) -> Vehicle:
-        '''Shortcut for `Route.drive_route()`
+        '''Shortcut for `Route.drive()`
 
         :param int time: route time in h
         :param int mileage: route mileage in km
         :return Vehicle: route Vehicle 
         '''
-        return self.drive_route(time, mileage)
+        return self.drive(time, mileage)
 
-    def drive_route(self, time: int, mileage: int):
-        self.vehicle._operating_hours += time
-        self.vehicle._mileage += mileage
-        return Vehicle
+    def drive(self, time: int, mileage: int) -> Vehicle:
+        self.vehicle.flight(time, mileage)
+        return self.vehicle
 
+    @Vehicle.log
+    def drive_with_logging(self, time: int, mileage: int) -> Vehicle:
+        return self.drive(time, mileage)
 
 class GarageFacilities():
 
