@@ -55,6 +55,8 @@ class UndeleteableArgumentError(Exception):
 
 class Vehicle():
 
+    '''Base vehicle class.'''
+
     def __init__(
         self,
         name: str,
@@ -80,28 +82,28 @@ class Vehicle():
             f'{self._number_of_repairs} number of repairs, '
             f'characteristic: "{self.characteristic}".'
         )
-    
+
     def flight(self, hours: int, mileage: int):
         self._operating_hours += hours
         self._mileage += mileage
         self.__flights.append(Flight(hours, mileage))
-    
+
     def get_flights(self):
         for i in range(len(self.__flights)):
             flight: Flight = self.__flights.pop(0)
             print(f'{flight._date}: {flight._hours} hours, {flight._mileage} km')
-    
+
     @property
     def characteristic(self):
         return self._characteristic
-    
+
     @characteristic.setter
     def characteristic(self, value):
         if not isinstance(value, str):
             raise TypeError(f'Value "{value}" should be {str}, not {type(value)}')
         else:
             self._characteristic = value
-    
+
     @characteristic.deleter
     def characteristic(self):
         raise UndeleteableArgumentError()
@@ -147,6 +149,8 @@ class LastWorkingDay():
             instance._last_working_day = value
 
 class Worker():
+
+    '''Base worker class.'''
 
     def __init__(
         self,
@@ -199,10 +203,16 @@ class PersistenceWorker:
 
 
 class Driver(Worker):
+
+    '''Driver worker class.'''
+
     job = 'driver'
 
 
 class Service(Worker):
+
+    '''Service worker class.'''
+
     job = 'service'
 
 # по идее, для Driver и Service можно создать класс Worker и либо от него
@@ -216,6 +226,8 @@ class Service(Worker):
 
 class Route():
 
+    '''Base route class.'''
+
     def __init__(
         self,
         name: str,
@@ -227,10 +239,20 @@ class Route():
         self.vehicle = vehicle
         self.driver = driver
         self.schedule = schedule
+    
+    def __call__(self, time: int, mileage: int) -> Vehicle:
+        '''Shortcut for `Route.drive_route()`
+
+        :param int time: route time in h
+        :param int mileage: route mileage in km
+        :return Vehicle: route Vehicle 
+        '''
+        return self.drive_route(time, mileage)
 
     def drive_route(self, time: int, mileage: int):
-        self.vehicle.operating_hours += time
-        self.vehicle.mileage += mileage
+        self.vehicle._operating_hours += time
+        self.vehicle._mileage += mileage
+        return Vehicle
 
 
 class GarageFacilities():

@@ -31,3 +31,30 @@ if __name__ == '__main__':
         del red_motorcycle.characteristic
     except Exception as e:
         print(f'! Exception: {e}')
+
+    # Лабораторная №6
+    driver_data = {
+        "surname": "Miloradov",
+        "name": "Damian",
+        "patronymic": "Leonidovich",
+        "year_of_birth": 1991,
+        "year_of_joining": 2007,
+        "experience": 16,
+        "post": "Bus driver",
+        "sex": "male",
+        "address": "Nekrasovskaya, bld. 53/А, appt. 33",
+        "city": "Kaspipol",
+        "phone_number": "+7(4232)57-70835"
+    }
+    driver = Driver(**driver_data)
+
+    route_data = {
+        "name": "Kaspipol — Alerzhinsk",
+        "vehicle": yellow_bus,
+        "driver": driver,
+        "schedule": "Sat 12:05 \nSun 11:09",
+    }
+    route = Route(**route_data)
+
+    route(10, 700)
+    print(help(route))
