@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>310</width>
+    <height>470</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>City Transport</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QGroupBox" name="routesBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>291</width>
+      <height>451</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Routes</string>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QVBoxLayout" name="routeLayout">
+       <item>
+        <layout class="QVBoxLayout" name="routeListLayout">
+         <item>
+          <widget class="QListView" name="routeListView"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="routeDeleteButton">
+           <property name="text">
+            <string>Delete selected</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="routeNewBox">
+         <property name="title">
+          <string>New</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <layout class="QVBoxLayout" name="routeNewLayout">
+            <item>
+             <layout class="QHBoxLayout" name="routeStartTimeLayout">
+              <item>
+               <widget class="QLabel" name="routeStartTimeLabel">
+                <property name="text">
+                 <string>Select route start time:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+                <property name="margin">
+                 <number>0</number>
+                </property>
+                <property name="indent">
+                 <number>0</number>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QTimeEdit" name="routeStartTimeEdit"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="routeEndTimeLayout">
+              <item>
+               <widget class="QLabel" name="routeEndTimeLabel">
+                <property name="text">
+                 <string>Select route end time:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+                <property name="margin">
+                 <number>0</number>
+                </property>
+                <property name="indent">
+                 <number>0</number>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QTimeEdit" name="routeEndTimeEdit"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="routeVehicleLayout">
+              <item>
+               <widget class="QLabel" name="routeVehicleLabel">
+                <property name="layoutDirection">
+                 <enum>Qt::LeftToRight</enum>
+                </property>
+                <property name="autoFillBackground">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Select vehicle:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+                <property name="wordWrap">
+                 <bool>false</bool>
+                </property>
+                <property name="margin">
+                 <number>0</number>
+                </property>
+                <property name="indent">
+                 <number>0</number>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="routeVehicleBox">
+                <property name="duplicatesEnabled">
+                 <bool>false</bool>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>Red bus</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Green bus</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Blue bus</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Yellow bus</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="routeDriverLayout">
+              <item>
+               <widget class="QLabel" name="routeDriverLabel">
+                <property name="text">
+                 <string>Select driver:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+                <property name="margin">
+                 <number>0</number>
+                </property>
+                <property name="indent">
+                 <number>0</number>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="routeDriverBox">
+                <item>
+                 <property name="text">
+                  <string>Frank Davis</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Lewis Johnson</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Pamela Johnson</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Connie Reed</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QPushButton" name="routeAddButton">
+              <property name="text">
+               <string>Add route</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -77,3 +77,6 @@ if __name__ == '__main__':
             route = get_sample_route()
             vehicle = route.drive_with_logging(8, 800)
             vehicle.get_flights(silent=True)
+        
+        case 8:  # Лабораторная №8
+            ...

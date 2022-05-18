@@ -238,11 +238,13 @@ class Route():
 
     def __init__(
         self,
+        number: int,
         name: str,
         vehicle: Vehicle,
         driver: Driver,
         schedule: str
     ):
+        self.number = number
         self.name = name
         self.vehicle = vehicle
         self.driver = driver
